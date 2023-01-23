@@ -58,10 +58,10 @@ async function handler(event) {
     user: { email, app_metadata },
   } = payload
 
-  // User is part of Netlify and already has role
+  // User is part of Ghost and already has role
   const found =
     app_metadata.roles &&
-    app_metadata.roles.find((r) => r == 'netlify') !== undefined
+    app_metadata.roles.find((r) => r == 'ghost') !== undefined
 
   if (found) {
     return {
@@ -69,12 +69,12 @@ async function handler(event) {
     }
   }
 
-  if (email && email.endsWith('@netlify.com')) {
+  if (email && email.endsWith('@ghost.org')) {
     console.log('User is part of Netlify without role. assigning...')
     const roles = (app_metadata && app_metadata.roles) || []
     const metadata = {
       ...app_metadata,
-      roles: [...roles, 'netlify'],
+      roles: [...roles, 'ghost'],
     }
     return {
       statusCode: 200,
@@ -82,7 +82,7 @@ async function handler(event) {
     }
   }
 
-  console.log('User is not part of Netlify.')
+  console.log('User is not part of Ghost.')
   return {
     statusCode: 401,
   }

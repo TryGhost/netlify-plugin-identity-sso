@@ -39,4 +39,4 @@ package = "netlify-plugin-identity-sso"
 
 - **Do not use a cached directory for publishing.** For some reason this breaks
   writing of a custom `netlify.toml` as part of the build.
-- This is hardcoded to allow any user with a `@netlify.com` email address.
+- This is hardcoded to allow any user with a `@ghost.org` email address.
