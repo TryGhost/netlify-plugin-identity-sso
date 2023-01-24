@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
 
-    <meta property="og:title" content="Netlify Rust Docs" />
-    <meta property="og:description" content="Documentation for x" />
+    <meta property="og:title" content="Ghost Sign-in" />
+    <meta property="og:description" content="Ghost internal tool" />
     <meta property="og:type" content="website" />
 
     <meta
@@ -14,7 +14,7 @@
     <meta name="distribution" content="Global" />
     <meta name="rating" content="General" />
 
-    <title>Netlify Rust Docs</title>
+    <title>Ghost Sign-in</title>
   </head>
 
   <body style="margin: 0; width: 100vw; height: 100vh">
@@ -79,7 +79,7 @@
         if (
           user &&
           user.app_metadata.roles &&
-          user.app_metadata.roles.includes('netlify')
+          user.app_metadata.roles.includes('ghost')
         ) {
           ensureFreshToken(user)
         }

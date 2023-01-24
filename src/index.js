@@ -50,7 +50,7 @@ async function generateSSO({ config /* &mut */, functionsDir, publishDir }) {
   const gatedRedirects = redirects.map((redirect) => ({
     ...redirect,
     conditions: {
-      Role: ['netlify'],
+      Role: ['ghost'],
     },
   }))
 
@@ -61,7 +61,7 @@ async function generateSSO({ config /* &mut */, functionsDir, publishDir }) {
       from: '/*',
       to: '/:splat',
       conditions: {
-        Role: ['netlify'],
+        Role: ['ghost'],
       },
       // will be set to 200 when there is content
       // since we don't set `force`
