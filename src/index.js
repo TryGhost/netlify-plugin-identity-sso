@@ -24,27 +24,11 @@ const toml = require('@iarna/toml')
  }} NetlifyConfig
 */
 
-const loginPage = '/_netlify-sso'
-const authFunc = 'sso-auth'
 
 /**
  * @param {{ config: NetlifyConfig, functionsDir: string, publishDir: string }} params
  */
-async function generateSSO({ config /* &mut */, functionsDir, publishDir }) {
-  await fs.mkdir(functionsDir, { recursive: true })
-  await fs.mkdir(publishDir, { recursive: true })
-
-  console.log('Copying static assets...')
-  const staticFileDir = path.resolve(__dirname, '../static')
-  await fs.copyFile(
-    path.join(staticFileDir, 'sso-login.html'),
-    path.join(publishDir, `${loginPage}.html`),
-  )
-  await fs.copyFile(
-    path.join(staticFileDir, 'sso-auth-function.js'),
-    path.join(functionsDir, `${authFunc}.js`),
-  )
-
+async function generateSSO({ config /* &mut */ }) {
   const redirects = config.redirects || []
   /** @type {NetlifyRedirect[]} */
   const gatedRedirects = redirects.map((redirect) => ({
@@ -70,7 +54,7 @@ async function generateSSO({ config /* &mut */, functionsDir, publishDir }) {
     // Serve login page on root
     {
       from: '/',
-      to: loginPage,
+      to: '/_sso-login',
       status: 401,
       force: true,
     },
@@ -86,8 +70,6 @@ async function generateSSO({ config /* &mut */, functionsDir, publishDir }) {
   return { ...config, redirects: [...gatedRedirects, ...additionalRedirects] }
 }
 
-const DEFAULT_FUNCTIONS_SRC = 'netlify-automatic-functions'
-
 module.exports = {
   // The plugin main logic uses `on...` event handlers that are triggered on
   // each new Netlify Build.
@@ -98,12 +80,10 @@ module.exports = {
     // Whole configuration file. For example, content of `netlify.toml`
     netlifyConfig,
     // Build constants
-    constants: { PUBLISH_DIR, FUNCTIONS_SRC = DEFAULT_FUNCTIONS_SRC },
+    constants: { PUBLISH_DIR },
   }) {
     const newConfig = await generateSSO({
-      config: netlifyConfig,
-      functionsDir: FUNCTIONS_SRC,
-      publishDir: PUBLISH_DIR,
+      config: netlifyConfig
     })
 
     console.log('Writing updated config to publish dir...')
