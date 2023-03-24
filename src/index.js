@@ -40,31 +40,12 @@ async function generateSSO({ config /* &mut */ }) {
 
   /** @type {NetlifyRedirect[]} */
   const additionalRedirects = [
-    // Serve content when logged in
-    {
-      from: '/*',
-      to: '/:splat',
-      conditions: {
-        Role: ['ghost'],
-      },
-      // will be set to 200 when there is content
-      // since we don't set `force`
-      status: 404,
-    },
-    // Serve login page on root
-    {
-      from: '/',
-      to: '/_sso-login',
-      status: 401,
-      force: true,
-    },
-    // Redirect to login page otherwise
     {
       from: '/*',
       to: '/_sso-login',
       status: 401, // Using 401 response instead of 302, will redirect in browser
       force: true,
-    },
+    }
   ]
 
   return { ...config, redirects: [...gatedRedirects, ...additionalRedirects] }
