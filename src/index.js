@@ -61,8 +61,8 @@ async function generateSSO({ config /* &mut */ }) {
     // Redirect to login page otherwise
     {
       from: '/*',
-      to: '/?redirect_to=/:splat',
-      status: 302,
+      to: '/',
+      status: 200, // Using 200 response instead of 302, will redirect in browser
       force: true,
     },
   ]
